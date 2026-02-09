@@ -27,6 +27,9 @@ Option C:
   
 The general requirements for option A, B & C:
   - Test application on at least two browsers and specify in README.md which version and browser it was.
+  Tested on:
+  Chrome Version 144.0.7559.133
+  Edge Version 144.0.3719.115
   - To pass this lab, you have to fully complete an option.  
   
 # Important notes
