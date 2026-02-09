@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="lt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>mediaLab4 WebRTC</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 16px; }
+    .row { display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start; }
+    video, canvas { border: 1px solid #ddd; max-width:100%; }
+  </style>
+</head>
+<body>
+  <h1>WebRTC Camera</h1>
+
+  <div class="row">
+    <div>
+      <h3>Input</h3>
+      <video id="video" autoplay playsinline muted></video>
+    </div>
+    <div>
+      <h3>Canvas</h3>
+      <canvas id="canvas"></canvas>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
