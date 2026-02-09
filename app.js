@@ -1,6 +1,14 @@
 const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
+const thr = document.getElementById("thr");
+const thrVal = document.getElementById("thrVal");
+const scaleSel = document.getElementById("scale");
+
+thr.addEventListener("input", () => (thrVal.textContent = thr.value));
+
+const work = document.createElement("canvas");
+const wctx = work.getContext("2d", { willReadFrequently: true });
 
 async function start() {
   const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
@@ -14,12 +22,29 @@ async function start() {
 }
 
 function tick() {
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  const scale = Number(scaleSel.value);
+  const ww = Math.max(1, Math.floor(video.videoWidth * scale));
+  const wh = Math.max(1, Math.floor(video.videoHeight * scale));
 
-  const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const edges = canny(frame, 60, 120); // kol kas fiksuoti threshold
+  if (work.width !== ww || work.height !== wh) {
+    work.width = ww;
+    work.height = wh;
+  }
 
-  ctx.putImageData(edges, 0, 0);
+  // draw scaled frame into work canvas
+  wctx.drawImage(video, 0, 0, ww, wh);
+  const frame = wctx.getImageData(0, 0, ww, wh);
+
+  const low = Number(thr.value);
+  const high = Math.min(255, low * 2);
+
+  const edges = canny(frame, low, high);
+
+  // upscale back to main canvas
+  wctx.putImageData(edges, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(work, 0, 0, canvas.width, canvas.height);
+
   requestAnimationFrame(tick);
 }
 
